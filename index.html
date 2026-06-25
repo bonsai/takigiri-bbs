@@ -6,6 +6,9 @@
 <title>ぷち滝行まっぷ - 地図掲示板</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.7.0/firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.7.0/auth-compat.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"Hiragino Sans","Yu Gothic",sans-serif;overflow:hidden;height:100vh;width:100vw;background:#1a2e1a;color:#f0f0e8}
@@ -114,6 +117,20 @@ body{font-family:"Hiragino Sans","Yu Gothic",sans-serif;overflow:hidden;height:1
 </div>
 
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyD_FKEbaBGIhNJCBdOFqNE3QhFez1KSfzk",
+  authDomain: "takigiri-bbs.firebaseapp.com",
+  projectId: "takigiri-bbs",
+  storageBucket: "takigiri-bbs.firebasestorage.app",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef123456"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+let currentUser = null;
+firebase.auth().signInAnonymously().catch(()=>{});
+
 const $ = s => document.querySelector(s);
 
 let map;
@@ -152,14 +169,16 @@ async function loadPosts() {
   const container = $('#postsList');
   container.innerHTML = '<div class="loading"><span class="spinner"></span>読み込み中...</div>';
   try {
-    const res = await fetch('/api/posts');
-    posts = await res.json();
-    posts.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
-    renderPosts();
-    dropMarkers();
-    $('#postCount').textContent = posts.length;
+    db.collection('posts').orderBy('created_at', 'desc').onSnapshot(snapshot => {
+      posts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderPosts();
+      dropMarkers();
+      $('#postCount').textContent = posts.length;
+    }, err => {
+      container.innerHTML = '<div class="empty-msg">読み込みエラー<br>' + err.message + '</div>';
+    });
   } catch(e) {
-    container.innerHTML = '<div class="empty-msg">サーバーに接続できません<br><code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:3px;font-size:0.72em">python bbs.py</code></div>';
+    container.innerHTML = '<div class="empty-msg">読み込みエラー<br>' + e.message + '</div>';
   }
 }
 
@@ -232,22 +251,19 @@ async function submitPost() {
   const comment = $('#comment').value.trim();
   if (!name || !comment) { alert('名前とコメントは必須です'); return; }
   if (currentLat == null) { alert('地図をクリックして位置を選択してください'); return; }
-  const res = await fetch('/api/posts', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({name, comment, lat: currentLat, lng: currentLng})
+  await db.collection('posts').add({
+    name, comment,
+    lat: currentLat, lng: currentLng,
+    created_at: new Date().toISOString()
   });
-  if (!res.ok) { alert('投稿に失敗しました'); return; }
   $('#name').value = '';
   $('#comment').value = '';
   resetForm();
-  loadPosts();
 }
 
 async function deletePost(id) {
   if (!confirm('この投稿を削除しますか？')) return;
-  await fetch('/api/posts/' + id, { method: 'DELETE' });
-  loadPosts();
+  await db.collection('posts').doc(id).delete();
 }
 
 function resetForm() {
