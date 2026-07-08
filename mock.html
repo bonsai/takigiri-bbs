@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ぷち滝行まっぷ — モック</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Hiragino Sans","Yu Gothic",sans-serif;background:#1a2e1a;color:#f0f0e8;min-height:100vh;padding:40px 20px}
+.container{max-width:800px;margin:0 auto}
+h1{font-size:1.8em;color:#c8e6c9;margin-bottom:8px}
+.subtitle{color:#8db88d;font-size:0.9em;margin-bottom:30px}
+.section{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:24px;margin-bottom:20px}
+.section h2{font-size:1.1em;color:#8db88d;margin-bottom:12px;border-bottom:1px solid rgba(141,184,141,0.2);padding-bottom:6px}
+.mock-screen{background:#0d1f0d;border:2px solid #2d4a2d;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:16/9}
+.mock-screen .bar{height:32px;background:#1a2e1a;display:flex;align-items:center;padding:0 12px;gap:8px}
+.mock-screen .bar .dot{width:10px;height:10px;border-radius:50%}
+.mock-screen .bar .dot-r{background:#ff5f56}
+.mock-screen .bar .dot-y{background:#ffbd2e}
+.mock-screen .dot-g{background:#27c93f}
+.mock-screen .bar .url{margin-left:12px;font-size:0.7em;color:#6a8a6a;background:#0d1f0d;padding:2px 10px;border-radius:4px;flex:1;text-align:center}
+.mock-layout{display:flex;height:calc(100% - 32px)}
+.mock-map{flex:1;background:linear-gradient(135deg,#2d4a2d 0%,#3a5a3a 50%,#2d4a2d 100%);position:relative}
+.mock-map .pin{position:absolute;width:12px;height:12px;background:#5b9a5b;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,0.4)}
+.mock-map .pin:nth-child(1){top:30%;left:40%}
+.mock-map .pin:nth-child(2){top:55%;left:60%}
+.mock-map .pin:nth-child(3){top:70%;left:30%}
+.mock-map .pin-my{position:absolute;top:45%;left:50%;width:14px;height:14px;background:#4285f4;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 4px rgba(66,133,244,0.3)}
+.mock-side{width:200px;background:rgba(20,35,20,0.95);border-left:1px solid rgba(255,255,255,0.1);padding:10px;overflow-y:auto}
+.mock-card{background:rgba(255,255,255,0.06);border-radius:6px;padding:8px;margin-bottom:6px}
+.mock-card .name{font-size:0.7em;color:#c8e6c9;font-weight:bold}
+.mock-card .text{font-size:0.65em;color:#a0b0a0;margin-top:3px;line-height:1.3}
+.mock-form{position:absolute;bottom:0;right:0;width:200px;background:rgba(20,35,20,0.95);border-left:1px solid rgba(255,255,255,0.1);padding:10px}
+.mock-form input,.mock-form textarea{width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:4px 8px;color:#f0f0e8;font-size:0.7em;margin-bottom:4px}
+.mock-form textarea{height:40px;resize:none}
+.mock-form button{background:#3a7c3a;color:#fff;border:none;padding:4px 12px;border-radius:4px;font-size:0.7em;cursor:pointer;width:100%}
+.flow{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.flow-item{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:14px 18px;flex:1;min-width:140px;text-align:center}
+.flow-item .icon{font-size:1.6em;margin-bottom:6px}
+.flow-item .label{font-size:0.75em;color:#8db88d}
+.flow-arrow{color:#5a8a5a;font-size:1.2em;align-self:center}
+code{background:rgba(0,0,0,0.4);padding:2px 8px;border-radius:4px;font-size:0.85em;color:#c8e6c9}
+ul{list-style:none;padding:0}
+li{padding:4px 0;font-size:0.85em;color:#b0c0b0}
+li::before{content:'✓ ';color:#5b9a5b}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🏔️ ぷち滝行まっぷ</h1>
+  <p class="subtitle">地図に滝行の足跡を刻む掲示板 — UIモック</p>
+
+  <div class="section">
+    <h2>画面モック</h2>
+    <div class="mock-screen">
+      <div class="bar">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+        <span class="url">https://takigiri-bbs.web.app</span>
+      </div>
+      <div class="mock-layout">
+        <div class="mock-map">
+          <div class="pin-my"></div>
+          <div class="pin"></div>
+          <div class="pin"></div>
+          <div class="pin"></div>
+        </div>
+        <div class="mock-side">
+          <div class="mock-card">
+            <div class="name">🌿 山伏 太郎</div>
+            <div class="text">今日は〇〇滝で滝行。水が冷たくて...</div>
+          </div>
+          <div class="mock-card">
+            <div class="name">🌿 水子 花子</div>
+            <div class="text">富士山麓の滝。霧が神秘的だった。</div>
+          </div>
+          <div class="mock-card">
+            <div class="name">🌿 渓流 次郎</div>
+            <div class="text">奥多摩の秘境滝。マイナスイオン...</div>
+          </div>
+        </div>
+        <div class="mock-form">
+          <input type="text" placeholder="名前" value="山伏 太郎">
+          <textarea placeholder="コメント">今日の滝行は最高でした！</textarea>
+          <button>投稿する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>ユーザーフロー</h2>
+    <div class="flow">
+      <div class="flow-item">
+        <div class="icon">🗺️</div>
+        <div class="label">地図を開く</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="icon">📍</div>
+        <div class="label">位置を選択</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="icon">✏️</div>
+        <div class="label">投稿する</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="icon">🔄</div>
+        <div class="label">リアルタイム反映</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>技術構成</h2>
+    <ul>
+      <li>Leaflet.js + OpenStreetMap（APIキー不要）</li>
+      <li>Firebase Firestore（リアルタイム同期）</li>
+      <li>Firebase Auth（匿名ログイン）</li>
+      <li>GitHub Pages ホスティング</li>
+      <li>サーバーレス（バックエンド不要）</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Firebase Config（ダミー）</h2>
+    <pre><code>const firebaseConfig = {
+  apiKey: "AIzaSyD_FKEbaBGIhNJCBdOFqNE3QhFez1KSfzk",
+  authDomain: "takigiri-bbs.firebaseapp.com",
+  projectId: "takigiri-bbs",
+  storageBucket: "takigiri-bbs.firebasestorage.app",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef123456"
+};</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>次のステップ</h2>
+    <ul>
+      <li>Firebase CLI でプロジェクト作成（家で）</li>
+      <li>Firestore セキュリティルール設定</li>
+      <li>GitHub Pages デプロイ設定</li>
+      <li>実APIキーに差し替え</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
